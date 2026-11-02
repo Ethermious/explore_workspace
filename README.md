@@ -107,3 +107,7 @@ Serve the project and open `tests/svg-browser.html` to run browser-native SVG ge
 ### Galaxy Encounter
 
 Open **Run Galaxy Encounter** for two moving softened gravitational fields with massless stellar tracers. WebGL 2 is required; start at the balanced 65,536-tracer preset. This is restricted gravitational dynamics, not a self-gravitating merger or prediction of real galaxies. Read `modules/galaxy-encounter/MODEL.md` for equations, numerical checks and limitations. Returning to the launcher unloads the module. CPU physics tests: `node modules/galaxy-encounter/physics.test.js`.
+
+## Fold-away Whiteboard Studio
+
+Open **Fold-away Whiteboard** from the launcher. This separate two-joint design study preserves the original five-bar playground. Start with **Fit to reach & check path**, then **Draw**. Board, links, shoulder placement and available parking clearance are independent; shaded usable reach updates without changing your link lengths. SVG strokes are fitted into sampled usable reach, and a checked near-fold side park is mandatory before drawing is enabled. Defaults deliberately accept partial coverage of a 6 × 3 ft board to park within its height. This is geometric exploration only—not approval of the existing motors, construction dimensions or physical clearance. See [model and limitations](modules/whiteboard-arm/MODEL.md). Run `node tests/whiteboard-arm.test.js` for its numerical regression suite.
