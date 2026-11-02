@@ -1,15 +1,12 @@
 'use strict';
-const assert=require('node:assert/strict'),D=require('../js/drawing.js'),A=require('../modules/whiteboard-arm/kinematics.js');
-const p={w:1828.8,h:914.4,base:292.608,mount:10,l1:694.944,l2:841.248,trayWidth:1828.8,trayHeight:100,parkHeight:90,linkWidth:10};let count=0;
-for(const micro of [1,2,4,8,16,32]){
- const dock=A.dock(p,micro);for(const v of dock.points){const pose=A.fk(p,v.q),q=A.quantize(p,pose,micro);assert(!pose.collision&&!q.collision);assert.equal(v.down,false);assert(A.inEnvelope(p,pose));for(const n of A.nodes(pose)){assert(n.x>=5&&n.x<=p.w-5);assert(n.y>=5&&n.y<=95)}count++}
- const rest=A.fk(p,dock.points.at(-1).q);for(const n of A.nodes(rest))assert(Math.abs(n.y-p.mount)<1e-8);assert.deepEqual(dock.points.at(-1).steps,[200*micro,0]);assert.throws(()=>A.checked(p,rest.tip,1,micro),/singular/);
- for(const name of ['robot','flower','wave']){const fitted=A.fit(D.demo(name),p,90,1,micro),draw=A.plan(p,fitted,dock.points[0].t,1,micro),park=A.park(p,draw.points.at(-1).t,1,micro);assert(draw.points.some(v=>v.down));assert(draw.points.some(v=>!v.down));for(const v of [...draw.points,...park.points]){const r=A.fk(p,v.q);assert(A.inEnvelope(p,r));assert(!r.collision);if(!v.phase)assert(r.margin>=A.MARGIN-1e-9);else assert(!v.down);count++}
- // End-to-start replay closure, no singular IK shortcut.
- assert(Math.hypot(A.fk(p,park.points.at(-1).q).tip.x-rest.tip.x,A.fk(p,park.points.at(-1).q).tip.y-rest.tip.y)<1e-8);
- }
+const assert=require('node:assert/strict'),D=require('../js/drawing.js'),A=require('../modules/whiteboard-arm/kinematics.js');let count=0;
+for(const side of ['left','right'])for(const micro of [8,16,32]){const p={...A.DEFAULTS,side},z=A.zone(p),dock=A.dock(p,micro),hub={x:z.cx,y:p.h*.575};
+const rest=A.fk(p,[0,Math.PI]);for(const n of A.nodes(rest))assert(Math.abs(n.y-p.mount)<1e-7);assert.deepEqual(dock.points.at(-1).steps,[0,200*micro]);assert.throws(()=>A.checked(p,rest.tip,1,micro),/singular/);assert(Math.abs(dock.width-890)<1e-7);
+for(const name of ['robot','flower','wave']){const fitted=A.fit(D.demo(name),p,30,1,micro),lead=A.plan(p,[[hub]],dock.points[0].t,1,micro),draw=A.plan(p,fitted,hub,1,micro),park=A.park(p,draw.points.at(-1).t,1,micro);assert(draw.points.some(v=>v.down));for(const route of [dock,lead,draw,park])for(let i=0;i<route.points.length;i++){const v=route.points[i],r=A.fk(p,v.q),rounded=A.quantize(p,r,micro);assert(A.inEnvelope(p,r)&&A.inEnvelope(p,rounded));if(!v.phase){assert(r.margin>=.08-1e-9);assert(r.condition<=20+1e-8);assert(r.det<0)}else assert(!v.down);if(i){const a=route.points[i-1],q=a.q.map((u,k)=>(u+v.q[k])/2),mid=A.fk(p,q);assert(A.inEnvelope(p,mid));if(!v.phase)assert(mid.margin>=.08-1e-8&&mid.condition<=20+1e-7)}count++}}
+const g=A.geometry(p,micro);assert.equal(g.units,'mm');assert.equal(g.version,1);assert.equal(g.executable,false);assert.equal(g.hardware_validated,false);assert.equal(g.kinematics.closure_det_sign,-1);assert.equal(g.link_center_distances_mm.AL,p.l1);assert.equal(g.poses.supported_singular_rest.pivots.A.x,z.cx-p.base/2);assert.deepEqual(JSON.parse(JSON.stringify(g)),g);
 }
-for(const bad of [{trayWidth:100},{trayHeight:20},{l2:800},{l2:900},{mount:0},{parkHeight:11},{linkWidth:30}])assert.throws(()=>A.dock({...p,...bad},16));
-assert.throws(()=>A.validate({...p,w:NaN}),/finite/);assert.throws(()=>A.plan(p,[[{x:0,y:914.4}]],{x:p.w/2,y:90},1,16));
-const resized={...p,w:2000,h:1000};A.dock(resized,16);assert.equal(resized.l1,p.l1);assert.equal(resized.l2,p.l2);
-console.log('PASS tray five-bar: '+count+' poses; all microstep settings, 3 drawings, exact horizontal supported rest, replay closure, invalid tray/geometry and guarded singularity rejection.');
+for(const bad of [{trayWidth:889},{trayHeight:20},{l1:850},{l2:440},{zoneWidth:880},{ledgeDepth:45.73},{w:NaN},{l1:884.6785714285714,l2:465,trayWidth:950,zoneWidth:1000}]){assert.throws(()=>A.geometry({...A.DEFAULTS,...bad}));}
+const p=A.DEFAULTS;assert.throws(()=>A.plan(p,[[{x:1000,y:700}]],{x:457.2,y:700},1,16),/robot|Unreachable|guard|singular/);const resized={...p,w:2000,h:1300};A.geometry(resized);assert.equal(resized.l1,p.l1);assert.equal(resized.zoneWidth,p.zoneWidth);
+console.log('PASS portable inward half-board: '+count+' poses plus midpoint checks; left/right, 8/16/32 microsteps, 3 demos, exact carry rest, robot-zone containment, exports and invalid geometry rejection.');
+assert.deepEqual(require('../docs/portable-fivebar-default.json'),A.geometry(A.DEFAULTS,16));
+console.log('PASS checked-in default CAD geometry matches the pure exporter.');

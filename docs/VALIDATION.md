@@ -34,3 +34,11 @@ Passed local Node checks:47,076 new five-bar/drawing/docking poses;34,020 origin
 Actual managed cloud-browser checks are recorded below after UI verification. Cloud GPU capability does not validate the user's GPU. No installs, hardware control or GitHub Actions were used.
 
 Managed cloud-browser QA passed: launcher opens05; default robot preflight3106 samples and completion at horizontal180°/0°,3200/0 microsteps,penUP; replay/reverse unpark, pause, rewind and re-preparation;100mm tray rejection disables Draw; restoring tray plus pasted disconnected line/quadratic SVG passes2164-sample preflight; board W2000 preserves both link lengths, recenters supported rest, updates reach26.8%→25.4% and passes2244-sample robot plan. Back removes iframe src. Final rendered canvas visibly shows robot ink above four horizontal links along bottom tray band. File-chooser import was not exercised; pasted SVG was. No physical support, branch retention or motor operation tested.
+
+## 2026-11-02 · portable half-board inward five-bar
+
+This supersedes the experiment05 outward full-board geometry above. Selected exact lengths d839.3571428571429,p854.6785714285714,q435mm. Board1828.8×1219.2; robot half914.4mm. Inward IK[-1,+1], negative perpendicular FK, det<0, sine≥.08, condition≤20. Intentional projected crossings require unvalidated depth-separated links. All ideal/rounded pivots and therefore straight centerlines remain in the robot zone inset10mm. Exact supported singular carry pose has890mm padded span. Stage70mm gives more rounded-command conditioning margin than the research62.30112mm. No hardware execution or load validation.
+
+Passed:86,694 ideal/rounded path poses plus midpoint checks across left/right, microsteps8/16/32 and robot/flower/wave; exports JSON roundtrip and non-executable flags; invalid tray, lengths, zone and support depth rejection; original34,020 geometry and12,088 drawing checks; galaxy convergence/energy; field720,000 formula steps. Default robot ingress633, drawing4072 and park857 samples. Coarse connected reach59.26%; fine ideal research result59.63% is not claimed as exact UI coverage. Coarse stepping can cause large ideal FK error (1× docking maximum≈11.49mm;16×≈0.712mm), not accuracy certification.
+
+Browser QA is recorded separately after review. No installs, hardware, workflow runs or GitHub Actions.

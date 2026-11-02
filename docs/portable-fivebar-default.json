@@ -1,0 +1,127 @@
+{
+  "schema": "explore-workspace.fivebar-geometry",
+  "version": 1,
+  "executable": false,
+  "hardware_validated": false,
+  "adapter_required": true,
+  "units": "mm",
+  "frame": {
+    "origin": "whole board bottom-left",
+    "x": "right",
+    "y": "up",
+    "z": "out from board; depths not modeled"
+  },
+  "mechanism": "crossed inward five-bar, two fixed base motors",
+  "dimensions": {
+    "w": 1828.8,
+    "h": 1219.2,
+    "zoneWidth": 914.4,
+    "side": "left",
+    "base": 839.3571428571429,
+    "l1": 854.6785714285714,
+    "l2": 435,
+    "mount": 10,
+    "trayWidth": 890,
+    "trayHeight": 100,
+    "parkHeight": 70,
+    "linkWidth": 20,
+    "ledgeDepth": 45.72
+  },
+  "link_center_distances_mm": {
+    "AL": 854.6785714285714,
+    "BR": 854.6785714285714,
+    "LT": 435,
+    "RT": 435,
+    "AB": 839.3571428571429
+  },
+  "robot_zone": {
+    "x0": 0,
+    "x1": 914.4,
+    "y0": 0,
+    "y1": 1219.2,
+    "padding_mm": 10
+  },
+  "kinematics": {
+    "ik_signs": [
+      -1,
+      1
+    ],
+    "fk_intersection": "negative perpendicular from L to R",
+    "closure_det_sign": -1,
+    "min_sine": 0.08,
+    "max_condition": 20,
+    "motor_zero": "both angles zero along board +X; CCW positive; not homed",
+    "full_steps_per_revolution": 400,
+    "microsteps": 16
+  },
+  "poses": {
+    "nominal": {
+      "pivots": {
+        "A": {
+          "x": 37.521428571428544,
+          "y": 10
+        },
+        "B": {
+          "x": 876.8785714285714,
+          "y": 10
+        },
+        "L": {
+          "x": 788.1375313789342,
+          "y": 418.7186399777429
+        },
+        "R": {
+          "x": 126.2624686210657,
+          "y": 418.7186399777427
+        },
+        "T": {
+          "x": 457.2,
+          "y": 701.04
+        }
+      },
+      "motor_angles_rad": [
+        0.49861915505552623,
+        2.642973498534267
+      ],
+      "condition": 1.172201534282933,
+      "singular": false
+    },
+    "supported_singular_rest": {
+      "pivots": {
+        "A": {
+          "x": 37.521428571428544,
+          "y": 10
+        },
+        "B": {
+          "x": 876.8785714285714,
+          "y": 10
+        },
+        "L": {
+          "x": 892.2,
+          "y": 10
+        },
+        "R": {
+          "x": 22.199999999999932,
+          "y": 10.000000000000105
+        },
+        "T": {
+          "x": 457.2,
+          "y": 10.000000000000053
+        }
+      },
+      "motor_angles_rad": [
+        0,
+        3.141592653589793
+      ],
+      "condition": null,
+      "singular": true
+    }
+  },
+  "support": {
+    "maximum_carry_span_mm": 914.4,
+    "ledge_depth_mm": 45.72,
+    "overhang_permitted": true,
+    "center_of_mass_supported": "REQUIRED, NOT CALCULATED",
+    "carry_lock": "REQUIRED, NOT DESIGNED"
+  },
+  "status": "concept geometry only; no hardware calibration, dynamics, timing or commands"
+}
