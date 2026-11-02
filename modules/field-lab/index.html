@@ -1,0 +1,18 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Field Lab · Explore Workspace</title><link rel="stylesheet" href="style.css"></head><body>
+<canvas tabindex="0" id="field" aria-label="Interactive three-dimensional GPU particle attractor. Drag or use arrow keys to orbit; scroll or press plus/minus to zoom."></canvas>
+<header><a href="../../index.html" target="_top">← WORKSPACE</a><span>EXPERIMENT 02 / GPU DYNAMICS</span><button id="fullscreen">Full screen ↗</button></header>
+<main><div class="eyebrow"><i></i> LIVE PARTICLE INSTRUMENT</div><h1>Order inside<br><em>the chaos.</em></h1><p class="intro">Thousands of independent journeys.<br>One extraordinary field.</p></main>
+<aside aria-label="Simulation controls"><div class="panel-title">FIELD LAB <span>WEBGL 2</span></div>
+<label for="system">Dynamical system</label><select id="system"><option value="0">Lorenz · butterfly engine</option><option value="1">Thomas · tangled symmetry</option><option value="2">Aizawa · orbital bloom</option></select>
+<p id="description">Two unstable wings. A classic demonstration of deterministic chaos.</p>
+<label for="quality">Particle budget <output id="countLabel">65,536</output></label><select id="quality"><option value="32768">Quiet · 32k / 1× pixels</option><option value="65536" selected>Balanced · 65k / 1× pixels</option><option value="262144">Luminous · 262k / 1.25× pixels</option><option value="524288">Dense · 524k / 1.5× pixels</option></select>
+<label for="speed">Time flow <output id="speedLabel">1.0×</output></label><input id="speed" type="range" min="0.1" max="2" step="0.1" value="1">
+<label for="shape">Field parameter <output id="shapeLabel">ρ = 28.0</output></label><input id="shape" type="range" min="18" max="40" step="0.1" value="28">
+<label for="glow">Light intensity <output id="glowLabel">1.0×</output></label><input id="glow" type="range" min="0.2" max="2" step="0.1" value="1">
+<div class="seed-row"><label for="seed">Seed</label><input id="seed" type="number" min="1" max="999999" value="3070"><button id="reset">Reseed ↻</button></div>
+<div class="actions"><button id="pause" class="primary">Pause</button><button id="camera">Reset view</button></div>
+<label class="check"><input id="rotate" type="checkbox" checked> Slow camera drift</label>
+<details><summary>What is actually happening?</summary><p>Position integration runs on the GPU using WebGL 2 transform feedback: two particle buffers exchange roles every step. RK2 integration, four bounded substeps per displayed frame. CPU seeds particles; it does not integrate them.</p><p>Artistic dynamical-system exploration, not CFD, an engineering simulation, or a benchmark. FPS is observed browser frame cadence, not GPU execution time. No VRAM or temperature telemetry is available here.</p><p>Budget never increases automatically. Resolution is capped at 2560 × 1440 equivalent pixels; stop or choose Quiet if your machine feels busy. Hidden tabs pause; context loss stops the lab. Reload to restore.</p></details>
+</aside>
+<footer><div><b id="fps">—</b><span>FPS</span></div><div><b id="frame">—</b><span>FRAME MS</span></div><div><b id="particles">65k</b><span>GPU PARTICLES</span></div><p id="status" role="status">Initializing GPU…</p><span class="gesture">DRAG TO ORBIT · SCROLL TO ZOOM</span></footer>
+<div id="error" role="alert" hidden></div><script src="lab.js"></script></body></html>
