@@ -70,3 +70,40 @@ Cloud browser checks and limitations are recorded in `docs/VALIDATION.md`. Windo
 ## License
 
 Original workspace code is provided under the MIT license in `LICENSE`. The NVIDIA app is not bundled and has its own separate license. External guide links remain the property and responsibility of their respective projects.
+
+## Linkage drawing studio · v0.2
+
+1. Open Linkage playground. Load a built-in drawing or import/paste a **plain SVG**.
+2. Set artwork span and center, choose illustrative microstepping, then **Fit & check whole path**.
+3. **Draw artwork** plays ideal motor commands. The lavender ink follows the forward-kinematic tip of rounded motor step targets; the small amber cross is the unrounded requested tip. Dashed travel is virtual pen-up, never ink.
+4. Pause/resume or Rewind. Editing geometry, artwork fit, assembly branch or step setting invalidates the prepared path.
+5. Optionally enable **compact park after drawing** or preview park alone. This is a low-profile plan-view pose with sampled transit checks, not a guaranteed physical fold.
+
+The standard five-bar has **two driven base joints** and three passive moving pivots. M1/M2 command angles and continuous simulated microstep indices use +X as mathematical zero (400 full steps/revolution for a 0.9° motor). They are not homed motor positions, measured feedback, G-code, or a TMC2209 connection. No hardware command interface exists.
+
+### Artwork limits and privacy
+
+- Local SVG only: path M/L/H/V/C/S/Q/T/A/Z (absolute or relative), line, polyline, polygon, rect, circle, ellipse; group translate/scale/rotate/skew/matrix transforms.
+- Vector geometry is approximated by bounded samples. Filled shapes are traced along their outlines, not filled or hatched. Source stroke order can be retained, or nearest-endpoint ordering may reverse strokes to reduce pen-up travel.
+- Text, raster images/photos, `<use>`, embedded CSS/styles/classes, effects, external references, nested SVG viewports, entity declarations and scripts are rejected. Export simple numeric paths/shapes first. Root viewBox coordinates are retained geometrically; viewport clipping is not applied.
+- Limits: 1 MiB SVG, 2,000 XML elements, 400 shapes, 400 subpaths per path, 50,000 path tokens, 24,000 sampled points. Oversized or malformed inputs fail explicitly. Nothing uploads or fetches external SVG resources.
+- Paths must fit the selected linkage workspace. Preflight includes pen-up connectors and optional park, with ≤0.5 mm point spacing, fixed assembly branch, ideal/quantized closure, strict centerline crossings, geometric margin, and continuous angle counts. These sampled centerline tests do **not** prove swept-volume collision clearance, bearing limits or physical safety.
+
+### Physical limitations
+
+A pen lift is a separate actuator: the preview's UP/DOWN state is conceptual, not supplied by the two planar motors. A practical build must provide a lift or deliberately accept connecting marks. Holding torque is not moving torque; playback feed is not a certified motor speed. Gravity, inertial torque, acceleration profiles, backlash, elasticity, motor heating and joint stops are not modeled. Full-step/microstep rounding shows ideal geometric quantization only, not positioning accuracy.
+
+The planar linkage already lies in one plane. Exact collinearity may be geometrically impossible for a given set of lengths and is singular when possible. The optional compact park searches a lower-height reachable pose and validates its sampled approach; no automatic hardware folding is promised.
+
+### Drawing tests
+
+```sh
+node tests/kinematics.test.js
+node tests/drawing.test.js
+```
+
+Serve the project and open `tests/svg-browser.html` to run browser-native SVG geometry tests. The browser test has no network dependencies and exercises sanitization, relative subpaths, transformed curves, small-unit shapes and cancellation.
+
+### Galaxy Encounter
+
+Open **Run Galaxy Encounter** for two moving softened gravitational fields with massless stellar tracers. WebGL 2 is required; start at the balanced 65,536-tracer preset. This is restricted gravitational dynamics, not a self-gravitating merger or prediction of real galaxies. Read `modules/galaxy-encounter/MODEL.md` for equations, numerical checks and limitations. Returning to the launcher unloads the module. CPU physics tests: `node modules/galaxy-encounter/physics.test.js`.

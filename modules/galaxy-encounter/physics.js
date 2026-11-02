@@ -1,0 +1,16 @@
+/* Dimensionless Newtonian restricted encounter. G=1. No drag or backreaction. */
+(function(root){'use strict';
+const G=1;
+function rng(seed){let a=seed>>>0;return()=>{a+=0x6D2B79F5;let t=a;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296;};}
+function acceleration(p,centers,masses,scales){const a=[0,0,0];for(let i=0;i<2;i++){const d=p.map((v,k)=>v-centers[i][k]),q=d.reduce((s,v)=>s+v*v,scales[i]*scales[i]),f=-G*masses[i]/(q*Math.sqrt(q));for(let k=0;k<3;k++)a[k]+=f*d[k];}return a;}
+function centerAccelerations(s){const d=s.p[1].map((v,k)=>v-s.p[0][k]),q=d.reduce((v,x)=>v+x*x,s.soft*s.soft),f=G/(q*Math.sqrt(q));return[d.map(x=>s.m[1]*f*x),d.map(x=>-s.m[0]*f*x)];}
+function advance(s,h){const a=centerAccelerations(s);for(let i=0;i<2;i++)for(let k=0;k<3;k++){s.v[i][k]+=.5*h*a[i][k];s.p[i][k]+=h*s.v[i][k];}const b=centerAccelerations(s);for(let i=0;i<2;i++)for(let k=0;k<3;k++)s.v[i][k]+=.5*h*b[i][k];s.t+=h;return s;}
+function energy(s){let ke=0;for(let i=0;i<2;i++)ke+=.5*s.m[i]*s.v[i].reduce((a,x)=>a+x*x,0);const r2=s.p[0].reduce((v,x,k)=>v+(x-s.p[1][k])**2,s.soft*s.soft);return ke-G*s.m[0]*s.m[1]/Math.sqrt(r2);}
+function angularMomentum(s){const L=[0,0,0];for(let i=0;i<2;i++){const p=s.p[i],v=s.v[i],m=s.m[i];L[0]+=m*(p[1]*v[2]-p[2]*v[1]);L[1]+=m*(p[2]*v[0]-p[0]*v[2]);L[2]+=m*(p[0]*v[1]-p[1]*v[0]);}return L;}
+function makeEncounter({ratio=1.3,speed=.92,angle=22,seed=3070}={}){const m=[1,ratio],total=1+ratio,sep=10,soft=.8,escape=Math.sqrt(2*G*total/Math.sqrt(sep*sep+soft*soft)),theta=angle*Math.PI/180,rel=[-speed*escape*Math.cos(theta),speed*escape*Math.sin(theta),0];return{p:[[-sep*ratio/total,0,0],[sep/total,0,0]],v:[rel.map(x=>-x*ratio/total),rel.map(x=>x/total)],m,scales:[.6,.6*Math.cbrt(ratio)],soft,t:0,seed};}
+function circularSpeed(r,m,a){return Math.sqrt(G*m*r*r/Math.pow(r*r+a*a,1.5));}
+function rotate(p,tilt,node){const t=tilt*Math.PI/180,n=node*Math.PI/180,c=Math.cos(t),s=Math.sin(t),q=[p[0],c*p[1],s*p[1]];return[Math.cos(n)*q[0]-Math.sin(n)*q[1],Math.sin(n)*q[0]+Math.cos(n)*q[1],q[2]];}
+function stars(s,count,tilt=35,retrograde=false){const rand=rng(s.seed),data=new Float32Array(count*8);for(let i=0;i<count;i++){const g=i<count/2?0:1,scale=Math.cbrt(s.m[g]);let r;do{r=-.65*scale*Math.log(Math.max(1e-10,rand()*rand()));}while(r>3.2*scale||r<.04);const theta=rand()*Math.PI*2,speed=circularSpeed(r,s.m[g],s.scales[g]),direction=g===1&&retrograde?-1:1;const p=rotate([r*Math.cos(theta),r*Math.sin(theta),0],g?tilt:8,g?35:0),v=rotate([-direction*speed*Math.sin(theta),direction*speed*Math.cos(theta),0],g?tilt:8,g?35:0),j=i*8;for(let k=0;k<3;k++){data[j+k]=p[k]+s.p[g][k];data[j+4+k]=v[k]+s.v[g][k];}data[j+3]=g;data[j+7]=.45+.55*rand();}return data;}
+function tracerStep(p,v,h,oldCenters,newCenters,masses,scales){const a=acceleration(p,oldCenters,masses,scales),half=v.map((x,k)=>x+.5*h*a[k]),pos=p.map((x,k)=>x+h*half[k]),b=acceleration(pos,newCenters,masses,scales);return{p:pos,v:half.map((x,k)=>x+.5*h*b[k])};}
+const api={G,rng,acceleration,centerAccelerations,advance,energy,angularMomentum,makeEncounter,circularSpeed,stars,tracerStep};if(typeof module!=='undefined'&&module.exports)module.exports=api;else root.GalaxyPhysics=api;
+})(typeof globalThis!=='undefined'?globalThis:this);
