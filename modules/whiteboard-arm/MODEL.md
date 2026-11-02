@@ -1,38 +1,28 @@
-# Fold-away Whiteboard Studio
+# Five-bar horizontal tray-rest study
 
-A local 2D geometric design sandbox, not hardware control or build approval. The existing two-fixed-motor five-bar playground is unchanged. This design has one fixed shoulder motor and one motor carried at the elbow. A vertical board is an explicit assumption.
+Experiment 05 replaces the earlier serial shoulder/elbow arm. It is now a closed five-bar: two **fixed** base motors, two passive elbows and one shared passive pen pivot. Experiment 01 is unchanged.
 
-## Try it
+## Coordinates and geometry
 
-Open the new Workspace card, choose **Fit to reach & check path**, then **Draw**. Robot, flower and figure-eight demos or plain SVG use the shared sanitized SVG importer. Fit selects a large sampled usable rectangle, preserves aspect ratio, then checks the entire drawing, pen-up connectors and a mandatory near-fold park. A rejected path cannot play. Drag the pen or use target X/Y. Changing geometry invalidates the path; changing board size never changes physical link lengths. The explicit reach-length suggestion can reduce parking feasibility; it is not a construction recommendation.
+Millimetres; board is x=0..W, y=0..H, with bottom at y=0. Bases are ((W−d)/2,b) and ((W+d)/2,b). Each proximal link is p; each distal is q. The outward elbow branch is fixed. IK is the circle-intersection construction used in the original pure five-bar module. FK uses the upper intersection of equal-radius distal circles and checks the outward assembly branch. No unreachable coordinates are clamped into reach.
 
-The starting board is 1828.8 × 914.4 mm (6 × 3 ft). Shorter illustrative 650 mm links, shoulder 200 mm left and 100 mm above the bottom, accept partial coverage. The declared available envelope is the board plus 450 mm to its left, with no extra height. Measure your real clearance. Both ideal and rounded configurations must stay within it. The default robot finishes parked approximately x −200…−21 mm, y 76…725 mm. The final elbow is approximately 167.4° folded: fully folded 180° is singular and deliberately not commanded. A side margin of at least 10 mm applies to both ideal and rounded parked centerlines.
+Defaults: W=1828.8,H=914.4,d=292.608,p=694.944,q=841.248,b=10. Board edits do not resize links, motor spacing or tray. The tray is centered with illustrative span1828.8 and docking band y=0..100. Illustrative in-plane link width10 adds5mm to each side of centerline bounds. This does **not** model joint housings, bearing stacks, 3D tray depth or board offset.
 
-## Mathematics
+## Two different motion regimes
 
-Coordinates: board x=0…W, y=0…H; base b=(−offset,mount). Shoulder angle q1 is measured from +x; q2 is elbow-relative.
+1. **Guarded drawing and travel:** minimum absolute sine of both serial elbow angles and the distal closure angle ≥0.08; ideal and rounded FK closure, fixed outward assembly, strict nonadjacent centerline crossings and board-width motion envelope checked. Dense Cartesian samples ≤1mm include pen-up connectors. Largest usable rectangle is estimated on40×24 cells, then the actual fitted path is checked. Reach shading is approximate, not a guarantee of a connected or collision-free workspace.
+2. **Supported docking / reverse unpark:** a deliberately separate conceptual regime. Drawing ends, virtual pen lifts, guarded travel visits centered ingress then staging tip (W/2,90). Symmetric motor angles θL=π−ε, θR=ε ease to [π,0]. For exact horizontal rest, **q=p+d/2** is required; incompatible edits are rejected. An explicit button can update distal length, never silently. The upper FK tip follows
+   `y=b+p sin ε+sqrt(q²−(d/2+p cos ε)²)`.
+   At ε=0 all four links are horizontal, tip=(W/2,b). This terminal rest is **singular**. Its Jacobian is not invertible; it is not a valid drawing pose. The drawing margin guard is deliberately waived only in the supported, pen-up docking/unparking regime. Closure, centerline crossing and padded tray-band checks remain. A smoothstep parameter gives zero ideal terminal motor velocity. Playback rate is drawing mm/s but normalized phase units/s during docking, not certified motor timing.
 
-- elbow = b + L1 (cos q1, sin q1)
-- tip = elbow + L2 (cos(q1+q2), sin(q1+q2))
-- cos q2 = (|tip−b|²−L1²−L2²)/(2 L1 L2)
-- q1 = atan2(y−by,x−bx) − atan2(L2 sin q2,L1+L2 cos q2)
+The default exact-rest centerline span is1682.496mm; the assumed10mm link width gives a1692.496×10mm rest envelope (x68.152..1760.648,y5..15). The approach needs the larger100mm docking band, not just the10mm resting band. Exact rest is possible mathematically, not certified mechanically. The overlapping projected folded links require depth-stacked links/joints; tray support and a mechanism retaining/reselecting the upper passive assembly branch on unpark are required and unvalidated. Do not infer that a real robot can leave singular rest under two motor commands alone.
 
-The selected elbow branch is retained. The singularity guard is |sin q2|≥0.08. Exact radial reach is the annulus |L1−L2|…L1+L2. The displayed 861-point percentage additionally uses the selected branch, ideal singularity guard and declared wall envelope; it is approximate, not a maximum achievable area or physical-clearance proof. Fitting uses a separate 40×24 cell grid with ideal and rounded corner checks. Artwork is subsequently preflighted at ≤2 mm Cartesian spacing, maximum 50,000 samples. Park candidates use a 2° shoulder grid and 301 joint-space trajectory samples. These are finite numerical tests, not continuous swept-volume guarantees; unsuccessful search is not proof that no other motion exists.
+## Playback and accuracy
 
-Absolute step counts assume 400 full steps/revolution, ideal independent joints and selectable microstepping. No homing, feedback, backlash or real driver commands. Quantization reports ideal rounded-target displacement, not practical accuracy. Playback interpolates ideal joint samples, not a controller simulation. Park playback timing uses a nominal visual duration, not a calibrated motor speed.
+SVG import reuses the bounded, local-only drawing parser. Outlines only, not arbitrary raster art. Entire draw+park must pass before Draw enables. Pause, rewind and replay retain the sampled conceptual branch; editing geometry invalidates the plan. Dragging a singular rest is blocked. Drawing from rest first reverses the stored docking path. Pen UP/DOWN is a virtual separate actuator, not a supplied mechanism.
 
-For uniform links and concentrated elbow motor/tip payload, lengths in metres:
+400 full steps/rev corresponds to the0.9° motor. Ideal angle rounding is checked with FK; microsteps are resolution, not accuracy. Quantized steps at rest are exactly[200×microsteps,0]. Near singular docking can amplify rounding error; the maximum is reported. No motor connection, step generator, G-code, homing, torque sizing, collision certification or firmware exists. No gravity torque readout is presented: a serial2R load formula would be wrong for this closed chain. Motor holding torque is not available moving torque.
 
-τ1 = g[(m1 L1/2 + (m2+me+mp)L1) cos q1 + (m2 L2/2+mp L2) cos(q1+q2)]
+## Checks
 
-τ2 = g(m2 L2/2+mp L2) cos(q1+q2)
-
-Displayed absolute values are instantaneous unbalanced static gravity loads. All masses are editable illustrative assumptions, not manufacturer data. Holding torque of 0.30 N·m is not running torque. Long arms with these assumptions substantially exceed that rating. Reduction, counterbalance, stiffness, joint bearings, acceleration and measured torque-speed performance need separate engineering.
-
-## Hard limitations
-
-Park is required before drawing is enabled, but numerical centerline success does not certify physical tuck-away. No link thickness, depth layering, collision mesh, wall fixtures, cables, joint travel limits, motor body clearance, pen lift mechanism or structural deflection is modeled. The full transit can occupy the board area even though final park is entirely left of it. The highlighted small box is the final parked extent, not its swept-motion box. No hardware access, downloads, uploads or motor outputs occur.
-
-## Regression checks
-
-Run `node tests/whiteboard-arm.test.js` from repository root. It checks FK/IK reach, both branches, three drawings at 1/16/32 microsteps, complete drawing/park samples, rounded envelope/branch checks, unsuitable parking and singularity rejection, and gravity torque. Existing `tests/kinematics.test.js`, `tests/drawing.test.js` and browser SVG tests remain applicable to their existing modules/shared importer.
+`node tests/whiteboard-arm.test.js`: 47,076 poses across all six microstep settings, three drawings, mandatory exact horizontal rest, reverse/replay closure, independent dimension edits, incompatible geometry/insufficient tray rejection and drawing-singularity rejection. Sampled checks are not continuous swept-volume proof. Original five-bar, drawing, field and galaxy tests remain separate.

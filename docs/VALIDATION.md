@@ -24,3 +24,13 @@ A smooth rendering is not evidence of physical accuracy. This release has no har
 - PASS: actual cloud browser renders four project cards, opens Galaxy Encounter in its dedicated iframe, and Back returns to the launcher and removes the iframe source.
 - PASS: WebGL 2 unavailable message is explicit; no CPU substitute or falsely running gravity animation. Actual GPU shader/render execution and RTX performance remain UNVERIFIED here.
 - Linkage import UI: pasted transformed C/Q paths with disconnected subpaths and a circle accepted three strokes; malformed arc flags rejected and corrected paste recovered. The operating-system file chooser itself was not exercised; local file contents use the same importer.
+
+## 2026-11-02 · experiment05 horizontal five-bar correction
+
+Replaced the serial2R side park with two fixed base motors, outward-branch five-bar and explicit supported singular horizontal tray rest. The original shared five-bar and SVG parser implementations are unchanged.
+
+Passed local Node checks:47,076 new five-bar/drawing/docking poses;34,020 original geometry cases;12,088 original drawing quantized poses and continuous-angle regression; field formula720,000 steps; galaxy convergence/energy checks. New suite includes all six microstep settings, three demos, horizontal final links, replay closure, incompatible rest lengths, insufficient tray span/height and guarded drawing singularity rejection. These are numerical sampled tests, not physical collision/load or hardware tests.
+
+Actual managed cloud-browser checks are recorded below after UI verification. Cloud GPU capability does not validate the user's GPU. No installs, hardware control or GitHub Actions were used.
+
+Managed cloud-browser QA passed: launcher opens05; default robot preflight3106 samples and completion at horizontal180°/0°,3200/0 microsteps,penUP; replay/reverse unpark, pause, rewind and re-preparation;100mm tray rejection disables Draw; restoring tray plus pasted disconnected line/quadratic SVG passes2164-sample preflight; board W2000 preserves both link lengths, recenters supported rest, updates reach26.8%→25.4% and passes2244-sample robot plan. Back removes iframe src. Final rendered canvas visibly shows robot ink above four horizontal links along bottom tray band. File-chooser import was not exercised; pasted SVG was. No physical support, branch retention or motor operation tested.
