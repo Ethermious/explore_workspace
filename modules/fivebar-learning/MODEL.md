@@ -14,7 +14,21 @@ All lengths are millimetres unless explicitly converted. World origin is the who
 - Elbows L and R, tool T. A and B are the only driven pivots.
 - Ground A–B plus four moving links make five bars. Geometric crossings are not joints; the physical bars require separate depth layers.
 
-Generic planar mobility: M = 3(n−1)−2j = 3(5−1)−2·5 = 2. This count does not describe instantaneous control at singular poses.
+## Generic planar mobility
+
+The Grübler–Kutzbach criterion for a planar mechanism is:
+
+M = 3(n − 1) − 2j₁ − j₂.
+
+Here M is the number of independent degrees of freedom; n is the number of rigid bodies including ground; j₁ counts joints allowing one relative motion (revolute pins or prismatic sliders); and j₂ counts joints allowing two relative motions (ideal planar higher-pair contacts).
+
+A free planar rigid body has three motions: two translations and one rotation. Fixing ground leaves n−1 moving bodies. Each one-motion joint removes two relative motions; each two-motion joint removes one.
+
+For this linkage, n=5, j₁=5 and j₂=0:
+
+M = 3(5−1) − 2·5 − 0 = 12−10 = 2.
+
+This is a generic count assuming independent constraints. The two motor angles control the two freedoms on a chosen assembly branch away from singularities. Special alignments, including flat rest, need the separate instantaneous singularity analysis below. The lesson renders the generic formula and substitution with native MathML before the explanation and numbers.
 
 ## Elbow positions
 
@@ -111,3 +125,14 @@ The derivations above follow directly from this mechanism's constraints. General
 - [Chablat and Wenger, Working Modes and Aspects in Fully-Parallel Manipulators](https://arxiv.org/abs/0707.2006): inverse/direct solutions and serial/parallel singularities.
 - [Chablat and Wenger, Moveability and Collision Analysis for Fully-Parallel Manipulators](https://arxiv.org/abs/0707.1957): reachable sets versus collision-free path regions.
 - [Canonical geometry](../../docs/portable-fivebar-default.json) and [retained drive-feasibility research](../../docs/research/whiteboard-drive-feasibility/2026-11-02.md).
+
+
+## Comparing elbow working modes without confusing reach and paths
+
+With unlimited ideal motor angles, all four IK elbow-sign choices share the same annular-intersection pen reach. Branch differences in this lesson's shaded comparison come from the selected pose's whole-link padded containment and differential regularity, not a different annular reach formula.
+
+The comparison accepts a pose when all pivots satisfy the padded robot-half envelope, the minimum of both absolute serial sines and the absolute parallel sine is at least 0.08, and κ₂(J) is at most 20. It permits either closure determinant sign. The separate canonical inward drawing preview additionally requires det C < 0; that restriction must not silently erase other assembly modes in this four-working-mode comparison.
+
+The comparison grid is mirror-symmetric: x=(i+1/2)914.4/26 and y=(j+1/2)1219.2/34. Among 884 half-board sample points, every working mode has 554 geometrically reachable points. Contained-and-regular counts are 546 for (−,+), 150 for (+,−), and 311 each for (+,+) and (−,−). These are sampled pointwise counts, not exact area, guaranteed connected paths, collision clearance or hardware-safe regions. The two matching counts reflect mirror symmetry rather than an accidental asymmetric sampling grid.
+
+The guided module keeps these concepts spatially coupled: equations, symbol-specific highlights, coordinate projections and causal input/output labels change together through manual steps. No animation, control command or automatic branch transition is implied.

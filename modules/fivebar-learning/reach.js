@@ -1,0 +1,6 @@
+/* Sampled teaching maps. Alternate working modes allow either FK assembly sign. */
+(function(root){'use strict';const M=root.LearningMath||(typeof require==='function'?require('./math.js'):null);const modes=[[-1,1],[1,-1],[1,1],[-1,-1]],cache=new Map();
+function regularContained(s){return !!s&&s.contained&&Math.min(...s.serial,s.parallel)>=.08&&s.condition<=20;}
+function map(branch,spacing=36){const key=branch.join(',')+':'+spacing;if(cache.has(key))return cache.get(key);const cells=[],nx=Math.ceil(M.D.zone/spacing),ny=Math.ceil(M.D.height/spacing),dx=M.D.zone/nx,dy=M.D.height/ny;let geometric=0,contained=0,positive=0,negative=0;for(let iy=0;iy<ny;iy++)for(let ix=0;ix<nx;ix++){const x=(ix+.5)*dx,y=(iy+.5)*dy;const s=M.ik({x,y},branch),regular=regularContained(s);if(s)geometric++;if(regular){contained++;if(s.det>0)positive++;else negative++;}cells.push({x,y,geometric:!!s,contained:regular,detSign:s?Math.sign(s.det):0});}const out={branch:[...branch],spacing,dx,dy,nx,ny,cells,total:cells.length,geometric,contained,positive,negative};cache.set(key,out);return out;}
+const api={modes,map,regularContained};root.LearningReach=api;if(typeof module!=='undefined')module.exports=api;
+})(typeof window!=='undefined'?window:globalThis);
