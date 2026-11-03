@@ -47,4 +47,6 @@ Covers 2,272 reachable poses over all four elbow branches, arm length constraint
 
 `test-reach.cjs` checks equal geometric masks, mirrored modes, both-sign comparison policy and cached map counts. `test-ui.cjs` is a dependency-free DOM contract smoke test of all 36 steps, chapter changes, reset/reveal, branch/layer controls, FK alternatives and invalid states. It is not a layout or actual-browser test.
 
-Opening the geometry controls deliberately switches the narrow-screen workbench to diagram-plus-inputs. The current explanation is temporarily hidden and restored with “Return to the guided idea.” Inputs never scroll the page. Selected elbow signs, live solved angles, FK intersection signs and point-force torques stay synchronized with their displayed equations.
+Opening the geometry controls deliberately switches the narrow-screen workbench to diagram-plus-inputs. On phones, the current title, equation and Previous/Next idea buttons remain beside the controls, with “Read this idea · keep pose” returning to the full explanation. On desktop, the complete idea column stays visible beside the diagram and controls. Inputs never scroll the page. Selected elbow signs, live solved angles, FK intersection signs and point-force torques stay synchronized with their displayed equations.
+
+Control-navigation tests cover repeated open → next → read → reopen → previous → close on phone and desktop state models, preserving the selected motor pose and idea and checking that sliders never request scrolling.
