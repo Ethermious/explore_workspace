@@ -121,3 +121,10 @@ Selected center-to-center dimensions: **proximal854.6785714286mm each; distal435
 Browser-independent CAD reference: [default portable five-bar geometry JSON](docs/portable-fivebar-default.json), generated from the pure exporter and checked by the numerical suite. It uses the default left robot half and16× nominal microstepping; it is not executable hardware data.
 
 Research checkpoint: [2026-11-02 drive feasibility — acrylic, aluminum and timing-belt reduction](docs/research/whiteboard-drive-feasibility/2026-11-02.md). Preserves assumptions, static torque comparisons and a resume checklist; it does not change the kinematic preview or validate hardware.
+
+
+## 06 — Linkage Fieldnotes · learn by moving
+
+Open **Learn the five-bar** for a standalone, phone-friendly eight-chapter learning module. Build intuition with live SVG diagrams and sliders, then derive inverse/forward kinematics, workspace constraints, Jacobians, singularities and virtual work. Each chapter includes a revealable reasoning check. No CDN, build step or hardware connection is required.
+
+Direct entry: [modules/fivebar-learning/index.html](modules/fivebar-learning/index.html). See its [run guide](modules/fivebar-learning/README.md) and [mathematical derivations with a worked example](modules/fivebar-learning/MODEL.md). Tests: `node modules/fivebar-learning/test-math.cjs`. The independent educational model permits explicitly labelled mathematical branch exploration; it does not change the Fold-away Whiteboard Studio's geometry, planner or guards.

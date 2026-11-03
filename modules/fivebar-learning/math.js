@@ -1,0 +1,14 @@
+/* Independent, ideal planar teaching model. mm, radians. No hardware commands. */
+(function(root){'use strict';
+const D=Object.freeze({width:1828.8,height:1219.2,zone:914.4,d:839.3571428571429,p:854.6785714285714,q:435,h:10,pad:10});
+const A={x:(D.zone-D.d)/2,y:D.h},B={x:(D.zone+D.d)/2,y:D.h};
+const sub=(a,b)=>({x:a.x-b.x,y:a.y-b.y}),dot=(a,b)=>a.x*b.x+a.y*b.y,cross=(a,b)=>a.x*b.y-a.y*b.x,dist=(a,b)=>Math.hypot(a.x-b.x,a.y-b.y),wrap=a=>Math.atan2(Math.sin(a),Math.cos(a));
+function elbow(O,T,s){const v=sub(T,O),r=Math.hypot(v.x,v.y);if(!Number.isFinite(r)||r<1e-9||r<Math.abs(D.p-D.q)-1e-8||r>D.p+D.q+1e-8)return null;const cosine=(D.p*D.p+r*r-D.q*D.q)/(2*D.p*r),rounded=Math.abs(1-Math.abs(cosine))<1e-14?Math.sign(cosine):cosine;const alpha=Math.atan2(v.y,v.x),beta=Math.acos(Math.max(-1,Math.min(1,rounded))),theta=alpha+s*beta;return{x:O.x+D.p*Math.cos(theta),y:O.y+D.p*Math.sin(theta),theta,alpha,beta,r};}
+function metrics(s){const u=[s.L,s.R].map(e=>({x:(s.T.x-e.x)/D.q,y:(s.T.y-e.y)/D.q}));const b=u.map((v,i)=>D.p*(-v.x*Math.sin(s.theta[i])+v.y*Math.cos(s.theta[i]))),det=cross(u[0],u[1]);const serial=b.map(v=>Math.abs(v/D.p)),parallel=Math.abs(det);let J=null,condition=Infinity;if(Math.abs(det)>1e-10){J=[u[1].y*b[0]/det,-u[0].y*b[1]/det,-u[1].x*b[0]/det,u[0].x*b[1]/det];const ss=J.reduce((v,x)=>v+x*x,0),jd=J[0]*J[3]-J[1]*J[2],dis=Math.sqrt(Math.max(0,ss*ss-4*jd*jd)),hi=(ss+dis)/2;condition=hi>0&&Math.abs(jd)>1e-9?hi/Math.abs(jd):Infinity;}
+const contained=[A,B,s.L,s.R,s.T].every(v=>v.x>=D.pad-1e-7&&v.x<=D.zone-D.pad+1e-7&&v.y>=D.pad-1e-7&&v.y<=D.height-D.pad+1e-7);return{u,b,det,serial,parallel,J,condition,contained,guarded:contained&&Math.min(...serial,parallel)>=.08&&condition<=20&&det<0};}
+function ik(T,branch=[-1,1]){if(!T||![T.x,T.y].every(Number.isFinite)||!branch.every(v=>v===-1||v===1)||branch.length!==2)return null;const L=elbow(A,T,branch[0]),R=elbow(B,T,branch[1]);if(!L||!R)return null;const s={A,B,L,R,T:{...T},theta:[L.theta,R.theta],branch:[...branch]};return Object.assign(s,metrics(s));}
+function fk(theta,sign=-1){if(!theta||theta.length!==2||!theta.every(Number.isFinite)||![-1,1].includes(sign))return null;const [L,R]=[A,B].map((o,i)=>({x:o.x+D.p*Math.cos(theta[i]),y:o.y+D.p*Math.sin(theta[i])})),v=sub(R,L),c=Math.hypot(v.x,v.y);if(c<1e-9||c>2*D.q+1e-8)return null;const height=Math.sqrt(Math.max(0,D.q*D.q-c*c/4)),T={x:(L.x+R.x)/2-sign*v.y/c*height,y:(L.y+R.y)/2+sign*v.x/c*height},s={A,B,L,R,T,theta:[...theta],c,height};return Object.assign(s,metrics(s));}
+function velocity(s,w){if(!s.J)return null;return{x:s.J[0]*w[0]+s.J[1]*w[1],y:s.J[2]*w[0]+s.J[3]*w[1]};}
+function torque(s,F){if(!s.J)return null;return[(s.J[0]*F.x+s.J[2]*F.y)/1000,(s.J[1]*F.x+s.J[3]*F.y)/1000];}
+const api={D,A,B,ik,fk,metrics,velocity,torque,dist,wrap};root.LearningMath=api;if(typeof module!=='undefined')module.exports=api;
+})(typeof window!=='undefined'?window:globalThis);
