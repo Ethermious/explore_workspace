@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#101e22">
+  <meta name="color-scheme" content="dark">
+  <title>Wave Loom · Explore Workspace</title>
+  <link rel="stylesheet" href="loom.css">
+</head>
+<body>
+  <div class="shell">
+    <header><a href="../../index.html" class="home" aria-label="Back to all Explore Workspace experiments"><svg aria-hidden="true" viewBox="0 0 24 24"><path d="M18 6H6v12M6 6l12 12"/></svg> Explore</a><span class="edition">07 / POCKET EXPERIMENT</span></header>
+    <main>
+      <div class="intro"><div><p class="eyebrow">A LITTLE MOTION, A LITTLE MAGIC</p><h1>Wave <em>Loom.</em></h1></div><span class="thread-mark" aria-hidden="true">∿</span></div>
+      <p class="invitation">Pull a thread. Let a wave go.</p>
+      <section class="instrument" aria-label="Interactive string experiment">
+        <div class="stage-top"><span class="live-dot" aria-hidden="true"></span><span id="stateLabel">LIVE STRING</span><button id="slow" class="mini" aria-pressed="false">¼× slow</button></div>
+        <canvas id="loom" tabindex="0" role="application" aria-label="Pluckable string" aria-describedby="canvasHelp">An interactive string. Use Pluck a wave and the experiment buttons below, or use arrow keys and Space when this canvas is focused.</canvas>
+        <div class="stage-bottom"><span id="gestureHint">TOUCH · PULL · RELEASE</span><span id="endLabel">FIXED ENDS</span></div>
+        <div class="energy" aria-label="Energy shares: kinetic energy is motion; potential energy is stored by deflection under tension"><span class="energy-label">ENERGY</span><div class="energy-track"><span id="motionBar"></span><span id="stretchBar"></span></div><span class="energy-legend"><i></i> kinetic <b></b> potential</span></div>
+      </section>
+      <p id="canvasHelp" class="assist">Drag vertically anywhere on the string. Two fingers work, too. Keyboard: ← / → choose a point; ↑ / ↓ shape it; Space releases it.</p>
+      <div class="transport"><button id="pluck" class="primary">Pluck a wave <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M6 6h12v12M18 6L6 18"/></svg></button><button id="pause" aria-pressed="false">Pause</button><button id="clear">Clear</button></div>
+      <section class="moments" aria-labelledby="momentHeading">
+        <div class="section-heading"><h2 id="momentHeading">Three things to feel</h2><span>TRY A MOMENT</span></div>
+        <div class="moment-buttons"><button data-scene="echo" aria-pressed="false"><span class="moment-glyph" aria-hidden="true">↶</span>Echo</button><button data-scene="cancel" aria-pressed="false"><span class="moment-glyph" aria-hidden="true">⌁</span>Disappear</button><button data-scene="standing" aria-pressed="false"><span class="moment-glyph" aria-hidden="true">∿</span>Stand still</button></div>
+        <div class="insight" aria-live="polite" aria-atomic="true"><p class="insight-kicker" id="insightKicker">TRANSVERSE WAVES</p><h3 id="insightTitle">The wave travels. The beads oscillate.</h3><p id="insightText">Follow one golden bead: its transverse displacement is its signed up-and-down offset from the resting line. The disturbance propagates along the string while each bead stays at the same horizontal position. Your finger supplies the energy.</p></div>
+      </section>
+      <div class="boundary-row"><span>At the ends</span><div class="segmented" role="group" aria-label="String end boundary"><button id="fixed" aria-pressed="true">Fixed</button><button id="free" aria-pressed="false">Free to slide</button></div></div>
+      <details class="tuning"><summary>Tune the thread <span aria-hidden="true">+</span></summary><div class="tuning-body"><label for="speed">Wave speed <output id="speedOut">0.22 lengths/s</output></label><input id="speed" type="range" min="0.08" max="0.4" step="0.01" value="0.22"><label for="damping">Damping <output id="dampingOut">Gentle</output></label><input id="damping" type="range" min="0" max="1.2" step="0.02" value="0.08"><label class="check"><input id="trails" type="checkbox" checked> Show the recent motion</label><p>Keyboard: focus the string with Tab. Left/right chooses a bead, up/down shapes it, and Space releases it. The buttons also work without dragging.</p><p>Wave speed is the propagation speed along the string, not the up-and-down speed of a bead. Greater tension T at the same linear mass density μ makes waves faster: c = √(T/μ). Changing it while moving can change the stored energy. Damping dissipates mechanical energy, making motion fade.</p></div></details>
+      <details class="science"><summary>What’s real here?</summary><div><p>A linear transverse-wave model of a uniform string: 129 points, each tugged by its neighbors. “Transverse” means the material moves perpendicular to the wave’s direction of travel. The screen exaggerates displacement so you can see it; the model assumes small slopes and constant tension.</p><p>Boundary conditions determine how the ends respond. Fixed ends impose zero displacement. Ends free to slide impose zero slope while the string remains under tension. A fixed end reverses a reflected pulse’s sign (phase inversion); a sliding end does not. In “Disappear,” destructive interference cancels displacement briefly, not energy.</p><p>Kinetic energy is energy of motion. Potential energy is stored by the string’s deflection under tension. The bar shows their <em>shares</em>, not the total energy. Damping dissipates energy; your touch can add or remove it. Trails show earlier shapes of this one string, not extra strings.</p><p>Normalized wave model: ∂²y/∂t² = c² ∂²y/∂x² − γ ∂y/∂t. Here y is transverse displacement, c is wave speed, and γ is the velocity-damping coefficient. This is not a large-deformation elastic rope with gravity. Simulation slows on overloaded devices rather than skipping unstable physics steps. No audio, network requests, sensors, motors or GPU compute.</p><p><a href="https://openstax.org/books/university-physics-volume-1/pages/16-5-interference-of-waves" target="_blank" rel="noopener noreferrer">The physics of interference</a> · <a href="https://openstax.org/books/university-physics-volume-1/pages/16-6-standing-waves-and-resonance" target="_blank" rel="noopener noreferrer">Standing waves</a></p></div></details>
+      <p class="footer-note">No score. No finish line. Just a beautiful thing to understand.</p>
+      <p id="status" role="status" class="assist"></p>
+      <noscript><p class="fallback">JavaScript is needed to move the string. The explanation and physics links still work.</p></noscript>
+    </main>
+  </div>
+  <script src="model.js"></script><script src="loom.js"></script>
+</body>
+</html>

@@ -55,3 +55,22 @@ Scope: GPU Field Lab and Galaxy Encounter presentation only. Their integration s
 - NOT VERIFIED in this environment: real WebGL shader compilation/rendered output, desktop/mobile pixel layout, Windows GPU selection and RTX 3070 Ti performance. Local Chromium launch was blocked by socket restrictions, including the permitted escalation route. The managed browser could not reach the local server; its file URL protocol is disallowed. No security setting, device access or browser-policy bypass was attempted.
 - Cinematic 2× is a presentation multiplier. It does not double simulation accuracy or prove a twofold GPU workload. The backdrop is static artistic shading; galaxy background stars are not physical tracers. The original simulation models and scientific limitations still apply.
 - No GitHub Actions workflow was created or invoked. No hardware access, overclocking, system changes, external data transfer or new dependency was added.
+
+## 2026-11-04 · Wave Loom phone-first experiment
+
+Added a standalone Canvas 2D string experiment, launcher card 07, direct route and updated experiment count. Existing experiment files are byte-identical to the b4921c17 published baseline.
+
+Passed Node checks: 86,400 new string stability/energy steps across three grid sizes, three speeds and both boundary types; reflected pulse signs; equal/opposite pulse cancellation with retained kinetic energy; linear superposition; damping; two held points/release; clear and input guards. Undamped smooth-mode relative energy error in the suite stays below 0.005%; reflection checks return approximately −0.49984 for pinned and +0.49989 for free endpoints from a 0.5 pulse.
+
+Passed mocked DOM/Canvas control checks: initial and later reduced-motion preference; pause/resume; two-pointer limit and capture/cancel cleanup; keyboard; hidden/page lifecycle with no catch-up; fixed-step wall-time cap; quarter-speed; boundary restarts; bounded trails/pixels; clear/idle; no-Canvas fallback including resize; standalone launcher/home routes. These do not validate actual pixels or hardware touch.
+
+Passed existing regressions: 34,020 linkage geometry cases; 12,088 drawing poses plus angle unwrap; 86,694 whiteboard poses plus midpoint/JSON export checks; Galaxy CPU convergence/energy tests; 2,272 Fieldnotes poses; 720,000 Field Lab formula steps; cinematic visual-control mocked lifecycle and unchanged integrator guards. No Actions, device access, native installs or hardware commands.
+
+Local headless Chromium could not launch because the execution environment disallowed its process socket. Managed Sites cloud-browser QA rendered the actual Canvas 2D page at 320px and 390px widths with no horizontal overflow. Verified visible animation, mouse pull/release, ArrowUp/Space keyboard hold/release, pause/resume, clear to flat/zero energy, all three moments, quarter-speed and free-end switch. Primary controls measured 49px high and moment buttons 69px. Browser review found unsupported diagonal-arrow glyphs, replaced with inline SVG. Browser-console messages were extension metadata issues, not application exceptions. Physical iPhone/Android, multi-touch hardware and battery/performance testing have not been performed.
+
+
+### Wave Loom terminology refinement · 2026-11-04
+
+The playful moment names now introduce transverse displacement and propagation, boundary reflection and phase inversion, superposition/destructive interference, and normal modes with nodes/antinodes. Fixed/free boundary labels and kinetic/potential energy shares replace the looser pinned and motion/stretch terms. Plain explanations accompany the terms, including potential energy stored by deflection under tension. The numerical model and interaction behavior are unchanged.
+
+Independent source/science review passed. Both Wave Loom suites pass with additional terminology and accessible-announcement assertions. All nine existing command-line regression suites pass, including Fieldnotes reach/UI navigation checks as well as the seven suites recorded above. Existing experiment internals remain byte-identical to main b4921c17. Main's complete recursive tree has no GitHub Actions workflow files.

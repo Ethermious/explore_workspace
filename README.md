@@ -145,3 +145,9 @@ Field Lab integrates particles in GPU-style transform-feedback shaders; Galaxy E
 For Windows verification, inspect `chrome://gpu` or `edge://gpu` for the WebGL acceleration status and renderer, then check the browser process's **GPU engine** in Task Manager. Browser frame cadence is not GPU execution time. No utilization, temperature or total VRAM monitoring is claimed.
 
 Regression check: `node tests/visual-controls.test.cjs`. This is a mocked DOM/WebGL state test, not a real GPU benchmark. See [validation limits](docs/VALIDATION.md).
+
+## 07 — Wave Loom · a pocket experiment
+
+[Open Wave Loom](modules/wave-loom/index.html) for a phone-first string you can pull and release. Follow a golden bead while waves travel, compare fixed/free reflections, watch opposite pulses disappear then reappear, or explore standing-wave nodes. Two-finger gestures, keyboard alternatives, Pause and quarter-speed motion are included. No scores or levels, no WebGL, sound, sensors or uploads.
+
+The standalone page uses Canvas 2D and a bounded, testable small-displacement string model. Reduced-motion preferences start paused. This is normalized-coordinate wave intuition, not a calibrated nonlinear rope or hardware simulation. See [run guide, model and limitations](modules/wave-loom/README.md). Checks: `node modules/wave-loom/test-model.cjs` and `node modules/wave-loom/test-controls.cjs`.
