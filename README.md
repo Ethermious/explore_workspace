@@ -128,3 +128,20 @@ Research checkpoint: [2026-11-02 drive feasibility — acrylic, aluminum and tim
 Open **Learn the five-bar** for a standalone, phone-friendly eight-chapter learning module. Build intuition with live SVG diagrams and sliders, then derive inverse/forward kinematics, workspace constraints, Jacobians, singularities and virtual work. Each chapter includes a revealable reasoning check. No CDN, build step or hardware connection is required.
 
 Direct entry: [modules/fivebar-learning/index.html](modules/fivebar-learning/index.html). See its [run guide](modules/fivebar-learning/README.md) and [mathematical derivations with a worked example](modules/fivebar-learning/MODEL.md). Tests: `node modules/fivebar-learning/test-math.cjs`. The independent educational model permits explicitly labelled mathematical branch exploration; it does not change the Fold-away Whiteboard Studio's geometry, planner or guards.
+
+
+## Cinematic GPU visuals · 2026-11-04
+
+GPU Field Lab and Galaxy Encounter now open with **Cinematic · 2×** rendering. Switch back to **Original · 1×** at any time. The visual multiplier changes particle light and halo size, not particle counts, integration steps, forces, or scientific fidelity. Three color stories, an optional static atmospheric backdrop, and **Focus view** (Escape to return) keep the scene in front of you. Galaxy background stars are decorative, not simulated matter. The original physics, seeds, quality choices and numerical limits are unchanged.
+
+Reduced-motion preferences start both experiments paused, without camera drift; Resume is an explicit choice. Hidden tabs still suspend simulation. Particle and pixel budgets never increase automatically. The added background is one bounded full-screen drawing pass, not a promise of identical frame time; turn off atmosphere or choose Original on slower devices. No flashing or decorative animation is added.
+
+### Is it actually using my GPU?
+
+Open **Which GPU is running this?** in either experiment. It displays the browser-reported renderer and explicitly warns if it recognizes a software renderer such as SwiftShader or llvmpipe. The app requests high-performance WebGL 2, but the browser chooses the device. WebGL availability alone does not prove NVIDIA hardware acceleration.
+
+Field Lab integrates particles in GPU-style transform-feedback shaders; Galaxy Encounter does the same for stars while computing its two halo centers on the CPU. A browser software renderer executes those same shaders on the CPU. Neither module supplies a separate JavaScript simulation fallback when WebGL 2 is absent.
+
+For Windows verification, inspect `chrome://gpu` or `edge://gpu` for the WebGL acceleration status and renderer, then check the browser process's **GPU engine** in Task Manager. Browser frame cadence is not GPU execution time. No utilization, temperature or total VRAM monitoring is claimed.
+
+Regression check: `node tests/visual-controls.test.cjs`. This is a mocked DOM/WebGL state test, not a real GPU benchmark. See [validation limits](docs/VALIDATION.md).

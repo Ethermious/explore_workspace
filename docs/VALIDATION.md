@@ -42,3 +42,16 @@ This supersedes the experiment05 outward full-board geometry above. Selected exa
 Passed:86,694 ideal/rounded path poses plus midpoint checks across left/right, microsteps8/16/32 and robot/flower/wave; exports JSON roundtrip and non-executable flags; invalid tray, lengths, zone and support depth rejection; original34,020 geometry and12,088 drawing checks; galaxy convergence/energy; field720,000 formula steps. Default robot ingress633, drawing4072 and park857 samples. Coarse connected reach59.26%; fine ideal research result59.63% is not claimed as exact UI coverage. Coarse stepping can cause large ideal FK error (1× docking maximum≈11.49mm;16×≈0.712mm), not accuracy certification.
 
 Browser QA is recorded separately after review. No installs, hardware, workflow runs or GitHub Actions.
+
+
+## 2026-11-04 · Cinematic 2× presentation
+
+Scope: GPU Field Lab and Galaxy Encounter presentation only. Their integration shader strings and `step()` functions are unchanged, as is `modules/galaxy-encounter/physics.js`. All linkage, drawing, whiteboard and learning module files remain untouched.
+
+- PASS: original 34,020 geometry cases, 12,088 drawing poses, 86,694 portable five-bar poses, 720,000 field formula steps, galaxy center-energy/convergence checks, 2,272 lesson poses, reach-map checks and learning-control/DOM contract tests.
+- PASS: JavaScript syntax and patch-whitespace checks.
+- PASS: independent static review of render uniforms, resource cleanup and unchanged bounded particle/pixel budgets.
+- PASS: deterministic mocked DOM/WebGL tests for renderer classification, reduced-motion initial pause, pause preserving simulation time, presentation changes preserving simulation time, focus/Escape, hidden-tab suspension, disposal and unavailable-WebGL fallback. These exercise application state without a real WebGL driver.
+- NOT VERIFIED in this environment: real WebGL shader compilation/rendered output, desktop/mobile pixel layout, Windows GPU selection and RTX 3070 Ti performance. Local Chromium launch was blocked by socket restrictions, including the permitted escalation route. The managed browser could not reach the local server; its file URL protocol is disallowed. No security setting, device access or browser-policy bypass was attempted.
+- Cinematic 2× is a presentation multiplier. It does not double simulation accuracy or prove a twofold GPU workload. The backdrop is static artistic shading; galaxy background stars are not physical tracers. The original simulation models and scientific limitations still apply.
+- No GitHub Actions workflow was created or invoked. No hardware access, overclocking, system changes, external data transfer or new dependency was added.
