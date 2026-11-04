@@ -151,3 +151,14 @@ Regression check: `node tests/visual-controls.test.cjs`. This is a mocked DOM/We
 [Open Wave Loom](modules/wave-loom/index.html) for a phone-first string you can pull and release. Follow a golden bead while waves travel, compare fixed/free reflections, watch opposite pulses disappear then reappear, or explore standing-wave nodes. Two-finger gestures, keyboard alternatives, Pause and quarter-speed motion are included. No scores or levels, no WebGL, sound, sensors or uploads.
 
 The standalone page uses Canvas 2D and a bounded, testable small-displacement string model. Reduced-motion preferences start paused. This is normalized-coordinate wave intuition, not a calibrated nonlinear rope or hardware simulation. See [run guide, model and limitations](modules/wave-loom/README.md). Checks: `node modules/wave-loom/test-model.cjs` and `node modules/wave-loom/test-controls.cjs`.
+
+
+## Mandelbrot Atlas: a mathematically grounded fractal explorer
+
+Open **Explore the Mandelbrot set**, or [the standalone module](modules/mandelbrot/index.html), on a phone or desktop. Drag to pan, tap to inspect a parameter, pinch/scroll or use the buttons to zoom, and follow a selected orbit one iteration at a time. Exact center/span inputs and keyboard pan/zoom provide alternatives to gestures. Undo restores recent view/mode/parameter choices.
+
+The classical Mandelbrot map is zₙ₊₁ = zₙ² + c, z₀ = 0. The separate **Filled Julia** view fixes c and varies z₀. Optional integer powers 3–6 are explicitly labelled Multibrot, not classical Mandelbrot. Six interactive first-principles chapters cover complex numbers, iteration, escape, the two planes, numerical limits, and changing polynomial families.
+
+The renderer uses JavaScript binary64 in a Web Worker, with a cooperative fallback if workers are unavailable. It is not an arbitrary-precision deep-zoom renderer. The finite iteration budget, pixel sampling, strict escape thresholds, analytic interior shortcut, smooth coloring and numerical guard are explained in [MODEL.md](modules/mandelbrot/MODEL.md). Nothing uploads; the PNG save action is browser-local. A local HTTP server is recommended for Web Worker support.
+
+Checks: `node modules/mandelbrot/test-math.cjs` and `node modules/mandelbrot/test-controls.cjs`. The controls test uses a mocked DOM/worker; it is not actual Android gesture validation. The launcher preview is a mathematical main-cardioid/period-2-bulb icon, not a complete boundary rendering.

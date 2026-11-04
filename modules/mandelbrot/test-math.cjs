@@ -1,0 +1,14 @@
+'use strict';
+const assert=require('node:assert/strict'),M=require('./model.js');let checks=0;
+function ok(x,msg){assert.ok(x,msg);checks++;}function eq(a,b,msg){assert.deepEqual(a,b,msg);checks++;}
+for(const [cr,ci,escape,n]of [[0,0,false,600],[-1,0,false,600],[-2,0,false,600],[0,1,false,600],[1,0,true,3],[2,0,true,2],[.25,0,false,600],[-.75,.1,true,33]]){const r=M.iterate(cr,ci);eq(r.escaped,escape,`escape c=${cr}+${ci}i`);eq(r.n,n,`n for ${cr}`);}
+eq(M.orbit(-2,0,0,0,4).points.map(z=>z.x),[0,-2,2,2,2]);eq(M.orbit(-1,0,0,0,4).points.map(z=>z.x),[0,-1,0,-1,0]);
+for(const z of [.5,1])ok(!M.iterate(0,0,z,0,600,2,2).escaped,'unit disk is filled Julia for c=0');eq(M.iterate(0,0,2,0,600,2,2).n,1);eq(M.iterate(0,0,3,0,600,2,2).n,0);ok(M.iterate(0,0,3,0,600,2,2).smooth!==0,'n=0 smooth exterior should vary');ok(!M.iterate(-6,0,3,0,600,2,M.escapeRadius(-6,0,'julia')).escaped,'Julia fixed point 3 for c=-6');
+let seed=918273;const random=()=>((seed=(1664525*seed+1013904223)>>>0)/4294967296);
+for(let p=2;p<=6;p++)for(let k=0;k<160;k++){const cr=random()*4-2,ci=random()*3-1.5;const a=M.iterate(cr,ci,0,0,80,p),b=M.iterate(cr,-ci,0,0,80,p),c=M.iterate(cr,ci,0,0,300,p);eq([a.escaped,a.n],[b.escaped,b.n],'conjugation');if(a.escaped)eq([c.escaped,c.n],[true,a.n],'budget monotonicity');const radius=M.escapeRadius(cr,ci,'julia'),zr=random()*6-3,zi=random()*6-3,j=M.iterate(cr,ci,zr,zi,100,p,radius),orbit=M.orbit(cr,ci,zr,zi,100,p,radius);eq(j.escaped,orbit.escaped);eq(j.n,orbit.points.length-1);}
+for(const [cr,ci]of [[-2,0],[.25,0],[-.75,0],[-1.25,0],[0,.25],[1,0]])if([-2,.25,-.75,-1.25,1].includes(cr))ok(!M.analyticInterior(cr,ci),'shortcut excludes analytic boundaries/outside');
+for(let k=0;k<700;k++){const cr=random()*2.6-2,ci=random()*2-1;if(M.analyticInterior(cr,ci))ok(!M.iterate(cr,ci,0,0,2000,2,2,false).escaped,'shortcut interior survives explicit reference');}
+for(let k=0;k<150;k++){const view={x:random()*2-1,y:random()*2-1,span:.001+random()*3},w=800,h=500,x=random()*w,y=random()*h,z=M.pixelToComplex(x,y,w,h,view),p=M.complexToPixel(z.x,z.y,w,h,view);ok(Math.abs(p.x-x)<1e-8&&Math.abs(p.y-y)<1e-8,'coordinate inverse');const next=M.zoomAt(view,.5,x,y,w,h),a=M.pixelToComplex(x,y,w,h,next);ok(Math.hypot(a.x-z.x,a.y-z.y)<1e-13,'zoom anchor');}
+const c={...M.normalize(),bands:false},full=M.renderRows(c,41,29,0,29),parts=new Uint8ClampedArray(full.length);let off=0;for(let y=0;y<29;y+=5){const row=M.renderRows(c,41,29,y,Math.min(5,29-y));parts.set(row,off);off+=row.length;}eq(parts,full,'chunked render');
+ok(M.zoomAt({x:-.5,y:0,span:1e-9},.5,50,50,100,100).span>=1e-9);ok(M.clampView({x:Infinity,y:NaN,span:0}).span>0);eq(M.normalize({p:9,max:1,mode:'bad'}).p,6);eq(M.normalize({p:9,max:1,mode:'bad'}).max,32);
+console.log(`Mandelbrot math: ${checks} assertions passed.`);
